@@ -38,7 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttons = {
     "eco-dime": "selectEcoDimLevel.html",
     "jeunesse": "selectYouthLevel.html",
-    "responsables": "selectResponsibleLevel.html"
+    "responsables": "selectResponsibleLevel.html",
+    "biblical": "selectLevelsBiblical.html",
+    "general": "selectLevelsGeneral.html"
   };
 
   Object.entries(buttons).forEach(([id, url]) => {

@@ -1,3 +1,3 @@
 setTimeout(() => {
-        window.location.href = "selectlevels.html";
+        window.location.href = "selectQuiz.html";
       }, 5000);

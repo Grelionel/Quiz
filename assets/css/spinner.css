@@ -1,0 +1,35 @@
+
+      #spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        display: none;
+        z-index: 1000;
+      }
+
+      #spinner img {
+        width: 200px;
+        height: 200px;
+        animation: blink 1s ease-in-out infinite; 
+      }
+
+     
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        } 
+        100% {
+          opacity: 1;
+        }
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }

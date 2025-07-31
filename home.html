@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz à Deux Interfaces</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f0f0f0;
+        display: flex;
+        height: 100vh;
+      }
+      .interface {
+        width: 50%;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .question-interface {
+        background-color: #e6f3ff;
+      }
+      .answer-interface {
+        background-color: #fff3e6;
+      }
+      .question-text {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .ok-button {
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+      }
+      .ok-button:hover {
+        background-color: #218838;
+      }
+      .answer-button {
+        display: block;
+        margin: 10px auto;
+        padding: 10px;
+        width: 80%;
+        font-size: 1em;
+        cursor: pointer;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+      }
+      .answer-button:hover {
+        background-color: #0056b3;
+      }
+      .answer-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      .result {
+        font-size: 1.2em;
+        margin-top: 20px;
+        text-align: center;
+      }
+      .correct {
+        background-color: #28a745 !important;
+      }
+      .incorrect {
+        background-color: #dc3545 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="interface question-interface">
+      <div class="question-text" id="question-text"></div>
+      <button class="ok-button" onclick="showAnswers()">OK</button>
+    </div>
+    <div class="interface answer-interface">
+      <div class="question-text" id="answer-question-text"></div>
+      <div id="answers"></div>
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      const questions = [
+        {
+          question:
+            "Quel élément HTML est utilisé pour créer un lien hypertexte ?",
+          answers: ["<link>", "<a>", "<href>", "<url>"],
+          correct: "<a>",
+        },
+        {
+          question: "Quelle propriété CSS contrôle la taille du texte ?",
+          answers: ["font-size", "text-size", "font-style", "text-height"],
+          correct: "font-size",
+        },
+        {
+          question: "Comment déclare-t-on une variable en JavaScript (ES6) ?",
+          answers: ["var", "let", "const", "Toutes les réponses ci-dessus"],
+          correct: "Toutes les réponses ci-dessus",
+        },
+        {
+          question: "Quel sélecteur CSS cible un élément par son ID ?",
+          answers: [".id", "#id", "id", "*id"],
+          correct: "#id",
+        },
+        {
+          question:
+            "Quelle méthode JavaScript est utilisée pour ajouter un élément à la fin d'un tableau ?",
+          answers: ["push()", "pop()", "shift()", "unshift()"],
+          correct: "push()",
+        },
+      ];
+
+      let currentQuestion = 0;
+      let score = 0;
+      let answersVisible = false;
+
+      function loadQuestion() {
+        const questionText = document.getElementById("question-text");
+        const answerQuestionText = document.getElementById(
+          "answer-question-text"
+        );
+        const answersDiv = document.getElementById("answers");
+        const resultDiv = document.getElementById("result");
+        const okButton = document.querySelector(".ok-button");
+
+        questionText.textContent = questions[currentQuestion].question;
+        answerQuestionText.textContent = "";
+        answersDiv.innerHTML = "";
+        resultDiv.textContent = "";
+        okButton.disabled = false;
+        answersVisible = false;
+      }
+
+      function showAnswers() {
+        if (answersVisible) return;
+        answersVisible = true;
+
+        const answerQuestionText = document.getElementById(
+          "answer-question-text"
+        );
+        const answersDiv = document.getElementById("answers");
+        const okButton = document.querySelector(".ok-button");
+
+        okButton.disabled = true;
+        answerQuestionText.textContent = questions[currentQuestion].question;
+        answersDiv.innerHTML = "";
+
+        questions[currentQuestion].answers.forEach((answer) => {
+          const button = document.createElement("button");
+          button.classList.add("answer-button");
+          button.textContent = answer;
+          button.onclick = () => checkAnswer(answer, button);
+          answersDiv.appendChild(button);
+        });
+      }
+
+      function checkAnswer(selected, button) {
+        const resultDiv = document.getElementById("result");
+        const answerButtons = document.querySelectorAll(".answer-button");
+        const correctAnswer = questions[currentQuestion].correct;
+
+        answerButtons.forEach((btn) => (btn.disabled = true));
+
+        if (selected === correctAnswer) {
+          button.classList.add("correct");
+          resultDiv.textContent = "Correct !";
+          score++;
+        } else {
+          button.classList.add("incorrect");
+          resultDiv.textContent = `Faux ! La bonne réponse était : ${correctAnswer}`;
+        }
+
+        setTimeout(() => {
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            loadQuestion();
+          } else {
+            const answerQuestionText = document.getElementById(
+              "answer-question-text"
+            );
+            const answersDiv = document.getElementById("answers");
+            const resultDiv = document.getElementById("result");
+            answersDiv.innerHTML = "";
+            answerQuestionText.textContent = "";
+            resultDiv.textContent = `Quiz terminé ! Votre score : ${score}/${questions.length}`;
+            document.getElementById("question-text").textContent =
+              "Quiz terminé !";
+            document.querySelector(".ok-button").style.display = "none";
+          }
+        }, 5000); // Délai de 5 secondes
+      }
+
+      // Charger la première question
+      loadQuestion();
+    </script>
+  </body>
+</html>

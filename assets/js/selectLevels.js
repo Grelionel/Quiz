@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const buttons = {
-    "eco-dime": "selectEcoDimLevel.html",
-    "jeunesse": "selectYouthLevel.html",
-    "responsables": "selectResponsibleLevel.html",
+    "eco-dime": "selectPosition.html",
+    "jeunesse": "selectPosition.html",
+    "responsables": "selectPosition.html",
     "biblical": "selectLevelsBiblical.html",
     "general": "selectLevelsGeneral.html"
   };
@@ -50,5 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       console.warn(`Button with ID ${id} not found`);
     }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('.round-btn');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(btn => btn.disabled = true);
+      button.disabled = false;
+    });
   });
 });
